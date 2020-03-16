@@ -3,14 +3,13 @@ import firebase from 'firebase'
 if (!firebase.apps.length) {
   firebase.initializeApp(
     {
-      apiKey: "AIzaSyBRigF2_KeNL10bDDvewDYIswvr75JZBxo",
-      authDomain: "whitia.firebaseapp.com",
-      databaseURL: "https://whitia.firebaseio.com",
-      projectId: "whitia",
-      storageBucket: "whitia.appspot.com",
-      messagingSenderId: "556127341102",
-      appId: "1:556127341102:web:cf8f5021f3fe09276badbf",
-      measurementId: "G-BHCCQQH70R"
+      apiKey: "AIzaSyCjMMsX6upw-FyGq3KJm_0_gRqC0nR9NE0",
+      authDomain: "nuxt-firebase-sample-bc4b4.firebaseapp.com",
+      databaseURL: "https://nuxt-firebase-sample-bc4b4.firebaseio.com",
+      projectId: "nuxt-firebase-sample-bc4b4",
+      storageBucket: "nuxt-firebase-sample-bc4b4.appspot.com",
+      messagingSenderId: "400312403376",
+      appId: "1:400312403376:web:357a05b9449573a9054275"
     }
   )
 }
