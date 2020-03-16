@@ -47,6 +47,22 @@
         </div>
       </div>
 
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-3">
+          Avatar
+          <b-form-file
+            placeholder="画像ファイルを選択してください"
+            drop-placeholder="画像ファイルをドラッグ＆ドロップしてください"
+            accept="image"
+            id="avatar"
+            class="mb-3"
+            required
+            plain
+          ></b-form-file>
+          <img :src="$store.getters.getUser.avatar" class="img-fluid rounded-circle" />
+        </div>
+      </div>
+
       <div class="row justify-content-center mt-3">
         <div class="col-12 col-sm-3">
           <b-button block type="submit" variant="primary">Edit</b-button>
@@ -67,20 +83,41 @@ export default {
   methods: {
     editUser(e) {
       const user = {
-        id: this.$store.getters.getUser.id,
+        oldId: this.$store.getters.getUser.id,
+        newId: this.$store.getters.getUser.id,
         name: {
           first: e.target.first.value,
           last: e.target.last.value
         },
-        age: e.target.age.value
+        age: e.target.age.value,
+        avatar: e.target.avatar.files[0]
       }
 
-      this.$store.dispatch('editUser', { user })
-      .then(() => {
-        setTimeout(() => {
-          this.$router.push('/users')
-        }, 1000)
-      })
+      if (user.avatar) {
+        this.$store.dispatch('deleteFile', { name: user.oldId })
+
+        this.$store.dispatch('uploadFile', {
+          file: user.avatar
+        })
+        .then(response => {
+          user.newId = response.name
+          user.avatar = response.url
+          this.$store.dispatch('editUser', { user })
+          .then(() => {
+            setTimeout(() => {
+              this.$router.push('/users')
+            }, 1000)
+          })
+        })
+      } else {
+        user.avatar = this.$store.getters.getUser.avatar
+        this.$store.dispatch('editUser', { user })
+        .then(() => {
+          setTimeout(() => {
+            this.$router.push('/users')
+          }, 1000)
+        })
+      }
     }
   }
 }

@@ -4,6 +4,7 @@
     <div class="row justify-content-center mb-3">
       <div class="col-12 col-sm-6">
         <h2>Users</h2>
+        <nuxt-link to="/users/create">Create user</nuxt-link>
       </div>
     </div>
 
@@ -54,6 +55,8 @@ export default {
           this.$store.dispatch('fetchUsers')
         }, 1000)
       })
+
+      this.$store.dispatch('deleteFile', { name: id })
     }
   }
 }

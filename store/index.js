@@ -77,13 +77,14 @@ export const actions = {
 
   editUser({ commit }, payload) {
     return new Promise((resolve, reject) => {
-      usersRef.where('id', '==', payload.user.id).get()
+      usersRef.where('id', '==', payload.user.oldId).get()
       .then(snapshot => {
         snapshot.forEach(doc => {
           const user = {
-            id: uuidv4(),
+            id: payload.user.newId,
             name: payload.user.name,
             age: payload.user.age,
+            avatar: payload.user.avatar,
             updated_at: firebase.firestore.FieldValue.serverTimestamp()
           }
   
@@ -131,6 +132,19 @@ export const actions = {
       })
       .catch(error => {
         console.error('An error occurred in uploadFile(): ', error)
+        reject(error)
+      })
+    })
+  },
+
+  deleteFile({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      firestorage.ref('images/').child(payload.name).delete()
+      .then(() => {
+        resolve(true)
+      })
+      .catch(error => {
+        console.log('An error occurred in deleteFile(): ', error)
         reject(error)
       })
     })
