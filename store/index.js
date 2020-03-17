@@ -7,6 +7,10 @@ const usersRef = db.collection('users')
 const firestorage = firebase.storage()
 
 export const state = () => ({
+  auth: {
+    uid: null,
+    name: null
+  },
   users: [],
   user: {
     id: '',
@@ -19,6 +23,22 @@ export const state = () => ({
 })
 
 export const actions = {
+  login({ commit }) {
+    return new Promise((resolve, reject) => {
+      const provider = new firebase.auth.GoogleAuthProvider()
+
+      firebase.auth().signInWithPopup(provider)
+      .then(result => {
+        commit('setAuth', result.user)
+        resolve(true)
+      })
+      .catch(error => {
+        console.error('An error occurred in login(): ', error)
+        reject(error)
+      })
+    })
+  },
+
   addUser({ commit }, payload) {
     const user = {
       id: payload.user.id,
@@ -152,6 +172,11 @@ export const actions = {
 }
 
 export const mutations = {
+  setAuth(state,auth) {
+    state.auth.uid = auth.uid
+    state.auth.name = auth.displayName
+  },
+
   initUsers(state) {
     state.users = []
   },
@@ -166,6 +191,10 @@ export const mutations = {
 }
 
 export const getters = {
+  getAuth(state) {
+    return state.auth
+  },
+
   getUsers(state) {
     return state.users
   },
